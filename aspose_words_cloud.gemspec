@@ -11,9 +11,10 @@ Gem::Specification.new do |s|
   s.description = 'This SDK allows you to work with Aspose.Words Cloud REST APIs in your Ruby applications quickly and easily, with zero initial cost'
   s.license     = 'MIT'
 
-  s.add_runtime_dependency 'faraday', '~> 0.14.0'
+  s.add_runtime_dependency 'faraday', '~> 0.9.0'
   s.add_runtime_dependency 'mimemagic', '~> 0.3.2'
-  
+  s.add_runtime_dependency 'multipart-parser', '~> 0.1.1'
+
   s.add_development_dependency 'minitest', '~> 5.11', '>= 5.11.3'
 
   s.files         = Dir['lib/**/*.rb']
