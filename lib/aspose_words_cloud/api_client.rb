@@ -86,12 +86,12 @@ module AsposeWordsCloud
         if response.status == 0
           # Errors from libcurl will be made visible here
           raise ApiError.new(:code => 0,
-                            :message => response.reason_phrase)
+                            :message => reason_phrase(response.status))
         else
           raise ApiError.new(:code => response.status,
                             :response_headers => response.headers,
                             :response_body => response.body),
-               response.reason_phrase
+               reason_phrase(response.status)
         end
       end
 
@@ -104,6 +104,22 @@ module AsposeWordsCloud
       end
 
       [data, response.status, response.headers]
+    end
+
+    def reason_phrase(status)
+      {
+        200 => 'OK',
+        201 => 'Created',
+        202 => 'Accepted',
+        204 => 'No Content',
+        400 => 'Bad Request',
+        401 => 'Unauthorized',
+        403 => 'Forbidden',
+        404 => 'Not Found',
+        500 => 'Internal Server Error',
+        502 => 'Bad Gateway',
+        503 => 'Service Unavailable'
+      }[status] || 'Unknown Status'
     end
 
     # Builds the HTTP request
