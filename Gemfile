@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'faraday', '~> 0.9', '>= 0.9.0'
+gem 'faraday', '~> 1.9', '>= 1.9.3'
 gem 'marcel', '>= 1.0.0'
 gem 'multipart-parser', '~> 0.1.1'
 
