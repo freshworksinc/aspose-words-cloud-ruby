@@ -997,6 +997,7 @@ module AsposeWordsCloud
         begin
         data, _status_code, _headers = convert_document_with_http_info(request)
         rescue ApiError => e
+            @api_client.config.logger.info "[ASPOSE] token expired"
             if e.code == 401
             request_token
             data, _status_code, _headers = convert_document_with_http_info(request)
@@ -21784,6 +21785,7 @@ module AsposeWordsCloud
      # Gets a request token from server
      #
     private def request_token
+      @api_client.config.logger.info "[ASPOSE] request_token"
       config = @api_client.config
       request_url = "/connect/token"
       post_data = "grant_type=client_credentials" + "&client_id=" + config.client_data['ClientId'] + "&client_secret=" + config.client_data['ClientSecret']

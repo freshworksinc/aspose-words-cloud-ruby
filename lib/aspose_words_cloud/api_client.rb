@@ -90,7 +90,12 @@ module AsposeWordsCloud
       end
 
       response = build_request(http_method, path, opts)
+
+      start_time = Time.now
       download_file response if opts[:return_type] == 'File'
+      end_time = Time.now
+      @config.logger.info "[ASPOSE] Output download file time taken: #{end_time - start_time} seconds" if path.include?('convert')
+
       if @config.debugging
         @config.logger.debug "'HTTP' response body '~BEGIN~'\n #{response.body}\n'~END~'\n"
       end
@@ -155,20 +160,31 @@ module AsposeWordsCloud
           @config.logger.debug "HTTP request body param ~BEGIN~\n#{req_body}\n~END~\n"
         end
       end
-
       conn = Faraday.new url, { :params => query_params, :headers => header_params } do |f|
       f.request :multipart
       f.request :url_encoded
       f.adapter Faraday.default_adapter
       end
-
+      @config.logger.info "[ASPOSE] request url: #{url}, query_params: #{query_params}, req_body: #{req_body}"
       case http_method
       when :post
-        return conn.post url, req_opts[:body]
+        start_time = Time.now
+        response = conn.post url, req_opts[:body]
+        end_time = Time.now
+        @config.logger.info "[ASPOSE] request time taken: #{end_time - start_time} seconds"
+        return response
       when :put
-        return conn.put url, req_opts[:body]
+        start_time = Time.now
+        response = conn.put url, req_opts[:body]
+        end_time = Time.now
+        @config.logger.info "[ASPOSE] request time taken: #{end_time - start_time} seconds"
+        return response
       when :get
-        return conn.get url, req_opts[:body]
+        start_time = Time.now
+        response = conn.get url, req_opts[:body]
+        end_time = Time.now
+        @config.logger.info "[ASPOSE] request time taken: #{end_time - start_time} seconds"
+        return response
       else
         conn.delete url do |c|
           c.body = req_opts[:body]
