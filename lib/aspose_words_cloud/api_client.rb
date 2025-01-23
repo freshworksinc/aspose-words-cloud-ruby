@@ -113,6 +113,7 @@ module AsposeWordsCloud
                             :response_headers => response.headers,
                             :response_body => response.body),
                reason_phrase(response.status)
+          # Changed from response.reason_phrase to custom implemented reason_phrase(response.status) as response.reason_phrase is available only from Faraday 0.10 but we have downgraded it to 0.9 for compatibility with itildesk
         end
       end
 
