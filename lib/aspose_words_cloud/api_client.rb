@@ -169,7 +169,7 @@ module AsposeWordsCloud
       f.request :url_encoded
       f.adapter Faraday.default_adapter
       end
-      @config.logger.info "[ASPOSE] request url: #{url}, query_params: #{query_params}, req_body: #{req_body}"
+      @config.logger.info "[ASPOSE] request url: #{url}, query_params: #{query_params}, req_body: #{req_body}" unless path.include?('token')
 
       case http_method
       when :post
@@ -316,7 +316,7 @@ module AsposeWordsCloud
       tempfile.write(response.body)
       response.on_complete do |resp|
         tempfile.close
-        @config.logger.info "Temp file written to #{tempfile.path}, please copy the file to a proper folder "\
+        @config.logger.info "[ASPOSE] Temp file written to #{tempfile.path}, please copy the file to a proper folder "\
                             "with e.g. `FileUtils.cp(tempfile.path, '/new/file/path')` otherwise the temp file "\
                             "will be deleted automatically with GC. It's also recommended to delete the temp file "\
                             "explicitly with `tempfile.delete`"
@@ -336,7 +336,7 @@ module AsposeWordsCloud
     tempfile = Tempfile.open(prefix, @config.temp_folder_path, encoding:body.encoding)
     @tempfile = tempfile
     tempfile.write(body)
-    @config.logger.info "Temp file written to #{tempfile.path}, please copy the file to a proper folder "\
+    @config.logger.info "[ASPOSE] Temp file written to #{tempfile.path}, please copy the file to a proper folder "\
                             "with e.g. `FileUtils.cp(tempfile.path, '/new/file/path')` otherwise the temp file "\
                             "will be deleted automatically with GC. It's also recommended to delete the temp file "\
                             "explicitly with `tempfile.delete`"
