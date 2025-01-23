@@ -89,7 +89,10 @@ module AsposeWordsCloud
         raise "ClientSecret could not be an empty string."
       end
 
+      start_time = Time.now
       response = build_request(http_method, path, opts)
+      end_time = Time.now
+      @config.logger.info "[ASPOSE] request time taken: #{end_time - start_time} seconds"
 
       start_time = Time.now
       download_file response if opts[:return_type] == 'File'
@@ -160,31 +163,21 @@ module AsposeWordsCloud
           @config.logger.debug "HTTP request body param ~BEGIN~\n#{req_body}\n~END~\n"
         end
       end
+
       conn = Faraday.new url, { :params => query_params, :headers => header_params } do |f|
       f.request :multipart
       f.request :url_encoded
       f.adapter Faraday.default_adapter
       end
       @config.logger.info "[ASPOSE] request url: #{url}, query_params: #{query_params}, req_body: #{req_body}"
+
       case http_method
       when :post
-        start_time = Time.now
-        response = conn.post url, req_opts[:body]
-        end_time = Time.now
-        @config.logger.info "[ASPOSE] request time taken: #{end_time - start_time} seconds"
-        return response
+        return conn.post url, req_opts[:body]
       when :put
-        start_time = Time.now
-        response = conn.put url, req_opts[:body]
-        end_time = Time.now
-        @config.logger.info "[ASPOSE] request time taken: #{end_time - start_time} seconds"
-        return response
+        return conn.put url, req_opts[:body]
       when :get
-        start_time = Time.now
-        response = conn.get url, req_opts[:body]
-        end_time = Time.now
-        @config.logger.info "[ASPOSE] request time taken: #{end_time - start_time} seconds"
-        return response
+        return conn.get url, req_opts[:body]
       else
         conn.delete url do |c|
           c.body = req_opts[:body]
