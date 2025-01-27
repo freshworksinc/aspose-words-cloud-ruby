@@ -997,8 +997,8 @@ module AsposeWordsCloud
         begin
         data, _status_code, _headers = convert_document_with_http_info(request)
         rescue ApiError => e
-            @api_client.config.logger.info "[ASPOSE] token expired"
             if e.code == 401
+            @api_client.config.logger.info '[ASPOSE] Token expired during convert_document request. Requesting new token and re-initiating the request'
             request_token
             data, _status_code, _headers = convert_document_with_http_info(request)
             else
