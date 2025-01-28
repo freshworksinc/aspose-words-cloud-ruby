@@ -98,7 +98,7 @@ module AsposeWordsCloud
       @client_data_prefix = {}
       @client_side_validation = true
       @debugging = false
-      @logger = Rails.logger || Logger.new($stdout)
+      @logger = defined?(Rails) ? Rails.logger : Logger.new(STDOUT)
 
       yield(self) if block_given?
     end
